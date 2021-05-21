@@ -1,0 +1,1 @@
+In the **sitedata** directory, the json_company_id_with_embedding.json, json_investor_id_with_embedding.json, company_with_hgt_embedddings.csv, and investor_with_hgt_embedddings.csv files need to be uploaded.
