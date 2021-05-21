@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "algorithmia": "^0.2.1",
+    "browserify": "^17.0.0",
+    "graceful-fs": "^4.2.6",
+    "natural": "^5.0.3",
+    "node-gyp": "^8.0.0",
+    "requirejs": "^2.3.6",
+    "tiny-tfidf": "^0.9.1",
+    "tiny-worker": "^2.0.1",
+    "uniq": "^1.0.1"
+  },
+  "name": "visualization_folder",
+  "description": "<a href=\"https://mini-conf.github.io/index.html\">MiniConf</a> is a virtual conference in a box. It manages the papers, schedules, and speakers for an academic conference run virtually. It can be easily integrated with interactive tools such as video, chat, and QA.",
+  "version": "1.0.0",
+  "main": ".eslintrc.js",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
