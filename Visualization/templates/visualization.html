@@ -1,0 +1,252 @@
+{% set page_title = "Paper Explorer" %}
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="static/css/visualization.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/d3@5/dist/d3.min.js"></script>
+{#
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.3/dist/handlebars.min.js" integrity="sha256-/PJBs6QWvXijOFIX04kZpLb6ZtSQckdOIavLWKKOgXU=" crossorigin="anonymous"></script>
+#}
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.0/dist/umd/popper.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tippy.js@6.2.3/dist/tippy-bundle.umd.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/tgdwyer/WebCola/WebCola/cola.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+{% endblock %}
+{% block tabs %}
+{% endblock %}
+
+{% block content %}
+<div class="container-lg" id="container">
+  <div class="row py-3">
+    <div
+      class="text-center"
+      style="margin-bottom: 10px;"
+    >
+      <div class="btn-group btn-group-toggle display_type">
+        <label
+          class="btn btn-outline-secondary active"
+          data-tippy-content="Search for companies"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="companies"
+            autocomplete="off"
+            checked
+          />
+          Companies
+        </label>
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for investors"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="investors"
+            autocomplete="off"
+          />
+          Investors
+        </label>
+      </div>
+    </div>
+    <div
+      class="col-12 col-sm-6 col-lg-4 text-center"
+      style="margin-bottom: 10px;"
+    >
+      <div class="btn-group btn-group-toggle filter_size">
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for small investor/companies"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="small"
+            autocomplete="off"
+          />
+          Small
+        </label>
+        <label
+          class="btn btn-outline-secondary active"
+          data-tippy-content="Search for medium investor/companies"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="medium"
+            autocomplete="off"
+            checked
+          />
+          Medium
+        </label>
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for large investor/companies"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="large"
+            autocomplete="off"
+          />
+          Large
+        </label>
+      </div>
+      </div>
+      
+      <div
+      class="text-center"
+      style="margin-bottom: 10px;"
+      >
+        
+      <div class="btn-group btn-group-toggle filter_region">
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for region America"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="America"
+            autocomplete="off"
+          />
+          America
+        </label>
+        <label
+          class="btn btn-outline-secondary active"
+          data-tippy-content="Search for region Europe"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="Europe"
+            autocomplete="off"
+            checked
+          />
+          Europe
+        </label>
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for region Asia"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="Asia"
+            autocomplete="off"
+          />
+          Asia
+        </label>
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for region Middle East"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="Middle East"
+            autocomplete="off"
+            checked
+          />
+          Middle East
+        </label>
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for region Oceania"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="Oceania"
+            autocomplete="off"
+            checked
+          />
+          Oceania
+        </label>
+        <label
+          class="btn btn-outline-secondary"
+          data-tippy-content="Search for region Africa"
+        >
+          <input
+            type="radio"
+            name="options"
+            value="Africa"
+            autocomplete="off"
+            checked
+          />
+          Africa
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row py-1" style="text-align: center;">
+    <div class="card" style="margin-right: -40px;">
+      <div class="card-header">
+        <div id="outer_svg" style="display: inline-block; vertical-align: top;">
+          <svg class="plot" style="display: block;"></svg>
+        </div>
+        <div
+          class="results"
+          style="display: inline-block; vertical-align: top; text-align: left;"
+        >
+          <div style="display: block; overflow-y: auto;" id="table_info">
+            <div id="explain_text_plot">
+              <p>
+                Each dot represents a company or investor. They are arranged by a measure of
+                similarity.
+              </p>
+              <p>If you <b>hover</b> over a dot, you see related information.</p>
+              <p>
+                If you <b>click</b> on a dot, you get detailed information about the node.
+              </p>
+              <p><b>Drag a rectangle </b> to summarize an area of the plot.</p>
+            </div>
+            <div id="summary_selection" style=""></div>
+            <div id="detailed_summary_company" style="display: none">
+                    <p id="search_words_com" class=search_words_com style="display: none"></p>
+                    <h2 class="company_name"></h2>
+                    <p class="keywords_company"></p>
+                    <p class="hq_location_company"></p>
+                    <p class="universe"></p>
+                    <p class="company_status"></p>
+                    <p class="ownership_status"></p>
+                    <p class="description_company"></p>
+                    <p>Click <a class="link_website_company" target="_blank">here</a> to visit the website.</p>
+            </div>
+            <div id="detailed_summary_investor" style="display: none">
+                    <p id="search_words_inv" class=search_words_inv style="display: none"></p>
+                    <h2 class="investor_name"></h2>
+                    <p class="hq_location_investor"></p>
+                    <p class="primary_investor_type"></p>
+                    <p class="other_investor_types"></p>
+                    <p class="investor_status"></p>
+                    <p class="description_investor"></p>
+                    <p>Click <a class="link_website_investor" target="_blank">here</a> to visit the website.</p>
+            </div>
+            <div style="overflow-y: auto; bottom: 0; margin-top: 5pt;">
+              <div id="sel_nodes"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/views/visualization.js"></script>
+<script src="static/js/views/tfidf.js"></script>
+
+<script>
+  $(document).ready(function () {
+    start();
+    tippy("[data-tippy-content]", { trigger: "mouseenter focus" });
+  });
+</script>
+{% endblock %}

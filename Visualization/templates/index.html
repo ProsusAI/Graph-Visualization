@@ -1,0 +1,50 @@
+{% set active_page = "Home" %}
+{% extends "base.html" %}
+
+{% block top %}
+<style>
+  .back {
+/*     background: url("{{config.background_image}}") no-repeat center; */
+    background-size: cover;
+    background-color: white;
+  }
+  .back h2 {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    color: #1136a8;
+  }
+    
+ .back h3 {
+    font-family: "Lato", sans-serif;
+    font-weight: 200;
+    color: #1136a8;
+  }
+  
+  
+</style>
+
+<div class="jumbotron jumbotron-fluid back" style="padding-bottom: 20px;">
+  <div class="row header p-6 m-5">
+    <div class="p-1 mx-auto text-center text-white col-md-9 col-sm-12">
+      <h2>
+        Welcome
+      </h2>
+      <h2 class="p-5">
+        This website shows a visualization between companies and investors. 
+      </h2>
+        <h3>
+            Created by Ramon Dijkstra during an internship @ Prosus AI-team.
+        </h3>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+<!-- Organizers -->
+<!-- {{ components.section("Organizers") }}
+{{ components.organizergroup(committee) }} -->
+
+{% endblock %}
